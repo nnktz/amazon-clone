@@ -1,10 +1,16 @@
 import { ThemeProvider } from '@mui/material';
 import { theme } from './shared/utils/theme';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 
-import HomePage from './shared/pages/Home.page';
-import RegisterPage from './shared/pages/Register.page';
-import SignInPage from './shared/pages/Signin.page';
+import HomePage from './pages/Home.page';
+import RegisterPage from './pages/Register.page';
+import SignInPage from './pages/Signin.page';
+import PrivateRoute from './features/auth/components/PrivateRoute';
 
 function App() {
   return (
@@ -13,7 +19,7 @@ function App() {
         <Routes>
           <Route
             path='/'
-            element={<HomePage />}
+            element={<PrivateRoute page={<HomePage />} />}
           />
           <Route
             path='/register'
@@ -22,6 +28,10 @@ function App() {
           <Route
             path='/signin'
             element={<SignInPage />}
+          />
+          <Route
+            path='*'
+            element={<Navigate to='/' />}
           />
         </Routes>
       </Router>
