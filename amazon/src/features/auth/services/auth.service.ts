@@ -15,7 +15,9 @@ const register = async (newUser: NewUser): Promise<DisplayUser | null> => {
   return res.data;
 };
 
-const login = async (user: LoginUser): Promise<Jwt> => {
+const login = async (
+  user: LoginUser
+): Promise<{ jwt: Jwt; user: DisplayUser | null }> => {
   const res = await axios.post(
     `${process.env.REACT_APP_BASE_API}/auth/login`,
     user
@@ -25,9 +27,11 @@ const login = async (user: LoginUser): Promise<Jwt> => {
     localStorage.setItem('jwt', JSON.stringify(res.data));
     const decodedJwt: DecodedJwt = jwt_decode(res.data.token);
     localStorage.setItem('user', JSON.stringify(decodedJwt.user));
+
+    return { jwt: res.data, user: decodedJwt.user };
   }
 
-  return res.data;
+  return { jwt: res.data, user: null };
 };
 
 const logout = (): void => {
